@@ -1,11 +1,11 @@
-DBCore = nil
+QBCore = nil
 
 -- Setup ESX Core
 Citizen.CreateThread(function() 
     while true do
         Citizen.Wait(10)
-        if DBCore == nil then
-            TriggerEvent("DBCore:GetObject", function(obj) DBCore = obj end)    
+        if QBCore == nil then
+            TriggerEvent("QBCore:GetObject", function(obj) QBCore = obj end)    
             Citizen.Wait(200)
         end
     end
@@ -13,8 +13,8 @@ end)
 -- Take Player Data After Player Loadout
 local isLoggedIn = false 
 
-RegisterNetEvent('DBCore:Client:OnPlayerLoaded')
-AddEventHandler('DBCore:Client:OnPlayerLoaded', function()
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     isLoggedIn = true
 end)
 
@@ -44,15 +44,15 @@ local started = false
 -- Gets coords
 
 Citizen.CreateThread(function()
-	while DBCore == nil do TriggerEvent("DBCore:GetObject", function(obj) DBCore = obj end)   Wait(0) end
-    DBCore.Functions.TriggerCallback('coke:processcoords', function(servercoords)
+	while QBCore == nil do TriggerEvent("QBCore:GetObject", function(obj) QBCore = obj end)   Wait(0) end
+    QBCore.Functions.TriggerCallback('coke:processcoords', function(servercoords)
         process = servercoords
 	end)
 end)
 
 Citizen.CreateThread(function()
-	while DBCore == nil do TriggerEvent("DBCore:GetObject", function(obj) DBCore = obj end) Wait(0) end
-    DBCore.Functions.TriggerCallback('coke:startcoords', function(servercoords)
+	while QBCore == nil do TriggerEvent("QBCore:GetObject", function(obj) QBCore = obj end) Wait(0) end
+    QBCore.Functions.TriggerCallback('coke:startcoords', function(servercoords)
         coord = servercoords
 	end)
 end)
@@ -74,12 +74,12 @@ Citizen.CreateThread(function()
 				sleep = 5
 				DrawText3Ds(coord.x, coord.y, coord.z, '[~g~E~w~] - Start Coke Run [~r~$1,000~w~]')		
 				if IsControlJustPressed(1, 51) then
-					DBCore.Functions.TriggerCallback('coke:pay', function(success)
+					QBCore.Functions.TriggerCallback('coke:pay', function(success)
 						if success then
 							main()
 							starter = true
 						else
-							TriggerEvent('DBCore:Notify', "Not enough money")
+							TriggerEvent('QBCore:Notify', "Not enough money")
 						end
 					end)
 				end
@@ -111,7 +111,7 @@ function main()
 	playAnim("mp_common", "givetake2_a", 3000)
 	Citizen.Wait(3000)
 	FreezeEntityPosition(player, false)
-	DBCore.Functions.Notify("Head to the airfield!", "primary")
+	QBCore.Functions.Notify("Head to the airfield!", "primary")
 	rand = math.random(1,#Config.locations)
 	location = Config.locations[rand]
 	blip = AddBlipForCoord(location.fuel.x,location.fuel.y,location.fuel.z)
@@ -146,7 +146,7 @@ function planeGround()
 	airplane = CreateVehicle(planehash, location.stationary.x,location.stationary.y,location.stationary.z, location.stationary.h, true, true)
 	FreezeEntityPosition(airplane, true)
 	SetVehicleDoorsLocked(airplane, 2)
-	DBCore.Functions.Notify("You need fuel..", "error")
+	QBCore.Functions.Notify("You need fuel..", "error")
 	fuel(location.fuel.x,location.fuel.y,location.fuel.z)
 end
 
@@ -161,7 +161,7 @@ function planeFly()
 	while not HasModelLoaded(planehash) do
 		Citizen.Wait(0)
 	end
-	DBCore.Functions.Notify("Wait for the plane..", "primary")
+	QBCore.Functions.Notify("Wait for the plane..", "primary")
 	airplane = CreateVehicle(planehash, location.plane.x,location.plane.y,location.plane.z, location.plane.h, true, true)
 
     SetEntityDynamic(airplane, true)
@@ -286,7 +286,7 @@ function fuel(x,y,z)
 			if disttocoord <= 3 then
 				DrawText3Ds(fuelCoords.x,fuelCoords.y,fuelCoords.z, '[~g~E~w~] - Pick up jerry can')	
 				if IsControlJustPressed(1, 51) then
-					DBCore.Functions.Progressbar("jerry_pickup", "Picking up jerry can..", math.random(5000, 10000), false, true, {
+					QBCore.Functions.Progressbar("jerry_pickup", "Picking up jerry can..", math.random(5000, 10000), false, true, {
 						disableMovement = true,
 						disableCarMovement = true,
 						disableMouse = false,
@@ -298,15 +298,15 @@ function fuel(x,y,z)
 					}, {}, {}, function() -- Done
 						DeleteEntity(fuelSpawn)
 						TriggerServerEvent('coke:GiveJerry')
-						TriggerEvent("inventory:client:ItemBox", DBCore.Shared.Items['jerry_can'], "add")
+						TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items['jerry_can'], "add")
 						FreezeEntityPosition(player, false)
-						TriggerEvent('DBCore:Notify', "Fuel the plane!")
+						TriggerEvent('QBCore:Notify', "Fuel the plane!")
 						plane(fuel)
 						fueling = false
 						dodo = true
 					end, function() -- Cancel
 						StopAnimTask(GetPlayerPed(-1), "random@mugging4", "struggle_loop_b_thief", 1.0)
-						DBCore.Functions.Notify("Canceled..", "error")
+						QBCore.Functions.Notify("Canceled..", "error")
 					end)
 				end
 			else
@@ -328,10 +328,10 @@ function plane(fuel)
 				DrawText3Ds(location.parking.x,location.parking.y,location.parking.z, '[~g~E~w~] Refuel the plane')
 				DrawMarker(27, location.parking.x,location.parking.y,location.parking.z-0.9, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0, 0.2, 3, 252, 152, 100, false, true, 2, false, false, false, false)
 				if IsControlJustPressed(1, 51) then
-					DBCore.Functions.TriggerCallback('coke:jerrycheck', function(success)
+					QBCore.Functions.TriggerCallback('coke:jerrycheck', function(success)
 						if success then
 							TriggerServerEvent('coke:RemoveJerry')
-							DBCore.Functions.Progressbar("plane_refuel", "You are fueling the plane..", math.random(5000, 10000), false, true, {
+							QBCore.Functions.Progressbar("plane_refuel", "You are fueling the plane..", math.random(5000, 10000), false, true, {
 								disableMovement = true,
 								disableCarMovement = true,
 								disableMouse = false,
@@ -343,9 +343,9 @@ function plane(fuel)
 							}, {}, {}, function() -- Done
 								dodo = false
 								delivering = true
-								DBCore.Functions.Notify("Finished refueling!", "success")
+								QBCore.Functions.Notify("Finished refueling!", "success")
 								TriggerServerEvent('coke:updateTable', false)
-								TriggerEvent("inventory:client:ItemBox", DBCore.Shared.Items['jerry_can'], "remove")
+								TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items['jerry_can'], "remove")
 								FreezeEntityPosition(airplane, false)
 								TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(airplane))
 								SetVehicleDoorsLocked(airplane, 0)
@@ -355,11 +355,11 @@ function plane(fuel)
 								starter = false
 							end, function() -- Cancel
 								StopAnimTask(GetPlayerPed(-1), "timetable@gardener@filling_can", "gar_ig_5_filling_can", 1.0)
-								DBCore.Functions.Notify("Canceled..", "error")
+								QBCore.Functions.Notify("Canceled..", "error")
 							end)					
 						else
 							isProcessing = false
-							DBCore.Functions.Notify("You need a jerry can..", "error")
+							QBCore.Functions.Notify("You need a jerry can..", "error")
 						end
 					end)
 				end
@@ -378,7 +378,7 @@ Citizen.CreateThread(function()
 		sleep = 100 
 		if DoesEntityExist(airplane) then
 			if GetVehicleEngineHealth(airplane) < 0 then
-				DBCore.Functions.Notify("The vehicle was damaged.. You failed the run", "error")
+				QBCore.Functions.Notify("The vehicle was damaged.. You failed the run", "error")
 				TriggerServerEvent('coke:updateTable', false)
 				checkPlane = false
 				inUse = false
@@ -412,7 +412,7 @@ function delivery()
 				SetBlipRoute(blip, false)
 				DrawText3Ds(location.delivery.x,location.delivery.y,location.delivery.z-1, '[~g~E~w~] - Pickup delivery')	
 				if IsControlJustPressed(1, 51) then
-					DBCore.Functions.Progressbar("package_pickup", "Picking up package..", math.random(5000, 10000), false, true, {
+					QBCore.Functions.Progressbar("package_pickup", "Picking up package..", math.random(5000, 10000), false, true, {
 						disableMovement = true,
 						disableCarMovement = true,
 						disableMouse = false,
@@ -423,12 +423,12 @@ function delivery()
 						flags = 16,
 					}, {}, {}, function() -- Done
 						delivering = false
-						DBCore.Functions.Notify("You picked up a delivery!", "success")
+						QBCore.Functions.Notify("You picked up a delivery!", "success")
 						DeleteEntity(pickupSpawn)
 						final()
 					end, function() -- Cancel
 						StopAnimTask(GetPlayerPed(-1), "weapon@w_sp_jerrycan", "fire", 1.0)
-						DBCore.Functions.Notify("Canceled..", "error")
+						QBCore.Functions.Notify("Canceled..", "error")
 					end)
 				end
 			else
@@ -440,7 +440,7 @@ function delivery()
 end
 
 function final()
-	DBCore.Functions.Notify("Deliver the plane back to the airfield!", "success")
+	QBCore.Functions.Notify("Deliver the plane back to the airfield!", "success")
 	blip = AddBlipForCoord(location.hangar.x,location.hangar.y,location.hangar.z)
 	SetBlipRoute(blip, true)
 	hangar = true
@@ -458,7 +458,7 @@ function final()
 				if IsControlJustPressed(1, 51) then
 					hangar = false
 					FreezeEntityPosition(airplane, true)
-					DBCore.Functions.Progressbar("park_plane", "Storing the plane..", math.random(5000, 10000), false, true, {
+					QBCore.Functions.Progressbar("park_plane", "Storing the plane..", math.random(5000, 10000), false, true, {
 						disableMovement = true,
 						disableCarMovement = true,
 						disableMouse = false,
@@ -469,7 +469,7 @@ function final()
 						flags = 16,
 					}, {}, {}, function() -- Done
 						TriggerServerEvent('coke:GiveItem')
-						TriggerEvent("inventory:client:ItemBox", DBCore.Shared.Items['coke_brick'], "add")
+						TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items['coke_brick'], "add")
 						TaskLeaveVehicle(player, airplane, 0)
 						SetVehicleDoorsLocked(airplane, 2)
 						DeleteEntity(airplane)	
@@ -480,7 +480,7 @@ function final()
 						end
 					end, function() -- Cancel
 						StopAnimTask(GetPlayerPed(-1), "weapon@w_sp_jerrycan", "fire", 1.0)
-						DBCore.Functions.Notify("Canceled..", "error")
+						QBCore.Functions.Notify("Canceled..", "error")
 					end)
 				end
 			else
@@ -506,11 +506,11 @@ Citizen.CreateThread(function()
 			DrawText3Ds(process.x, process.y, process.z, '[~g~E~w~] - Break Coke')				
 			if IsControlJustPressed(1, 51) then		
 				isProcessing = true
-				DBCore.Functions.TriggerCallback('coke:process', function(success)
+				QBCore.Functions.TriggerCallback('coke:process', function(success)
 					if success then
 						SetEntityHeading(player, 232.84)
 						TriggerServerEvent('coke:RemoveItem')
-						DBCore.Functions.Progressbar("coke_breakdown", "Breaking down the coke brick..", 20000, false, true, {
+						QBCore.Functions.Progressbar("coke_breakdown", "Breaking down the coke brick..", 20000, false, true, {
 							disableMovement = true,
 							disableCarMovement = true,
 							disableMouse = false,
@@ -520,15 +520,15 @@ Citizen.CreateThread(function()
 							anim = "machinic_loop_mechandplayer",
 							flags = 16,
 						}, {}, {}, function() -- Done
-							TriggerEvent("inventory:client:ItemBox", DBCore.Shared.Items['coke_brick'], "remove")
+							TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items['coke_brick'], "remove")
 							TriggerServerEvent('coke:processed')
 							isProcessing = false
 						end, function() -- Cancel
 							StopAnimTask(GetPlayerPed(-1), "anim@amb@clubhouse@tutorial@bkr_tut_ig3@", "machinic_loop_mechandplayer", 1.0)
-							DBCore.Functions.Notify("Canceled..", "error")
+							QBCore.Functions.Notify("Canceled..", "error")
 						end)					
 					else
-						TriggerEvent('DBCore:Notify', "You need a coke brick!")
+						TriggerEvent('QBCore:Notify', "You need a coke brick!")
 					end
 				end)
 			end

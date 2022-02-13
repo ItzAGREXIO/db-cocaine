@@ -1,5 +1,5 @@
-DBCore = nil
-TriggerEvent('DBCore:GetObject', function(obj) DBCore = obj end)
+QBCore = nil
+TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 local hiddenprocess = vector3(-331.7995, -2444.753, 7.358099) -- Change this to whatever location you want. This is server side to prevent people from dumping the coords
 local hiddenstart = vector3(2122.41, 4784.58, 40.93469) -- Change this to whatever location you want. This is server side to prevent people from dumping the coords
@@ -12,17 +12,17 @@ end)
 
 -- Hidden Coords to prevent cheaters from finding hidden locations
 
-DBCore.Functions.CreateCallback('coke:processcoords', function(source, cb)
+QBCore.Functions.CreateCallback('coke:processcoords', function(source, cb)
     cb(hiddenprocess)
 end)
 
-DBCore.Functions.CreateCallback('coke:startcoords', function(source, cb)
+QBCore.Functions.CreateCallback('coke:startcoords', function(source, cb)
     cb(hiddenstart)
 end)
 
 
-DBCore.Functions.CreateCallback('coke:process', function(source, cb)
-    local Player = DBCore.Functions.GetPlayer(source)
+QBCore.Functions.CreateCallback('coke:process', function(source, cb)
+    local Player = QBCore.Functions.GetPlayer(source)
     local Item = Player.Functions.GetItemByName("coke_brick")
 
     if Item ~= nil then
@@ -32,8 +32,8 @@ DBCore.Functions.CreateCallback('coke:process', function(source, cb)
     end
 end)
 
-DBCore.Functions.CreateCallback('coke:jerrycheck', function(source, cb)
-    local Player = DBCore.Functions.GetPlayer(source)
+QBCore.Functions.CreateCallback('coke:jerrycheck', function(source, cb)
+    local Player = QBCore.Functions.GetPlayer(source)
     local Item = Player.Functions.GetItemByName("jerrycan")
 
     if Item ~= nil then
@@ -44,9 +44,9 @@ DBCore.Functions.CreateCallback('coke:jerrycheck', function(source, cb)
 end)
 
 
-DBCore.Functions.CreateCallback('coke:pay', function(source, cb)
+QBCore.Functions.CreateCallback('coke:pay', function(source, cb)
 	local src = source
-	local Player = DBCore.Functions.GetPlayer(src)
+	local Player = QBCore.Functions.GetPlayer(src)
 	local price = Config.price
 	local check = Player.PlayerData.money.cash
 	if check >= price then
@@ -57,8 +57,8 @@ DBCore.Functions.CreateCallback('coke:pay', function(source, cb)
     end
 end)
 
-DBCore.Functions.CreateUseableItem("coke_small_brick", function(source, item)
-    local Player = DBCore.Functions.GetPlayer(source)
+QBCore.Functions.CreateUseableItem("coke_small_brick", function(source, item)
+    local Player = QBCore.Functions.GetPlayer(source)
 	if Player.Functions.RemoveItem(item.name, 1, item.slot) then
         Player.Functions.AddItem("cokebaggy", math.random(20, 30))
     end
@@ -67,10 +67,10 @@ end)
 RegisterServerEvent("coke:processed")
 AddEventHandler("coke:processed", function(x,y,z)
     local src = source
-    local Player = DBCore.Functions.GetPlayer(src)
+    local Player = QBCore.Functions.GetPlayer(src)
 
     Player.Functions.AddItem("coke_small_brick", math.random(8, 11))
-    TriggerClientEvent('inventory:client:ItemBox', src, DBCore.Shared.Items["coke_small_brick"], 'add')
+    TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items["coke_small_brick"], 'add')
 end)
 
 
@@ -79,7 +79,7 @@ end)
 RegisterServerEvent("coke:GiveItem")
 AddEventHandler("coke:GiveItem", function()
     local src = source
-    local Player = DBCore.Functions.GetPlayer(src)
+    local Player = QBCore.Functions.GetPlayer(src)
       Player.Functions.AddItem('coke_brick', 2)
 end)
 
@@ -88,7 +88,7 @@ end)
 RegisterServerEvent("coke:RemoveItem")
 AddEventHandler("coke:RemoveItem", function()
     local src = source
-    local Player = DBCore.Functions.GetPlayer(src)
+    local Player = QBCore.Functions.GetPlayer(src)
       Player.Functions.RemoveItem('coke_brick', 1)
 end)
 
@@ -97,7 +97,7 @@ end)
 RegisterServerEvent("coke:GiveJerry")
 AddEventHandler("coke:GiveJerry", function()
     local src = source
-    local Player = DBCore.Functions.GetPlayer(src)
+    local Player = QBCore.Functions.GetPlayer(src)
       Player.Functions.AddItem('jerrycan', 1)
 end)
 
@@ -106,6 +106,6 @@ end)
 RegisterServerEvent("coke:RemoveJerry")
 AddEventHandler("coke:RemoveJerry", function()
     local src = source
-    local Player = DBCore.Functions.GetPlayer(src)
+    local Player = QBCore.Functions.GetPlayer(src)
       Player.Functions.RemoveItem('jerrycan', 1)
 end)
