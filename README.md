@@ -2,10 +2,8 @@
 Cocaine script For Qbus Base server
 this script modified like OP-Framework Cocaine
 
+Still under work
 # Working with Only Qbus Base 
-- rename DBCore to your Core Name
-- add items in core -shared.lua
-
+Changed with qbcore fuel items and coke items (now no need to take item names from shared.lua)
+ 
  Credits - Erratic -  ESX Script
-
-Discord- https://discord.gg/EKJa7aD
