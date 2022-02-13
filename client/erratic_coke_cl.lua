@@ -1,15 +1,16 @@
 QBCore = nil
 
--- Setup ESX Core
-Citizen.CreateThread(function() 
-    while true do
-        Citizen.Wait(10)
-        if QBCore == nil then
-            TriggerEvent("QBCore:GetObject", function(obj) QBCore = obj end)    
-            Citizen.Wait(200)
-        end
-    end
-end)
+local QBCore = exports['qb-core']:GetCoreObject()
+-- -- Setup ESX Core
+-- Citizen.CreateThread(function() 
+--     while true do
+--         Citizen.Wait(10)
+--         if QBCore == nil then
+--             TriggerEvent("QBCore:GetObject", function(obj) QBCore = obj end)    
+--             Citizen.Wait(200)
+--         end
+--     end
+-- end)
 -- Take Player Data After Player Loadout
 local isLoggedIn = false 
 

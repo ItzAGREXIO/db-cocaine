@@ -1,5 +1,6 @@
-QBCore = nil
-TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
+
+local QBCore = exports['qb-core']:GetCoreObject()-- QBCore = nil
+-- TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 local hiddenprocess = vector3(-331.7995, -2444.753, 7.358099) -- Change this to whatever location you want. This is server side to prevent people from dumping the coords
 local hiddenstart = vector3(2122.41, 4784.58, 40.93469) -- Change this to whatever location you want. This is server side to prevent people from dumping the coords
@@ -34,7 +35,7 @@ end)
 
 QBCore.Functions.CreateCallback('coke:jerrycheck', function(source, cb)
     local Player = QBCore.Functions.GetPlayer(source)
-    local Item = Player.Functions.GetItemByName("jerrycan")
+    local Item = Player.Functions.GetItemByName("weapon_petrolcan")
 
     if Item ~= nil then
         cb(true)
@@ -98,7 +99,7 @@ RegisterServerEvent("coke:GiveJerry")
 AddEventHandler("coke:GiveJerry", function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-      Player.Functions.AddItem('jerrycan', 1)
+      Player.Functions.AddItem('weapon_petrolcan', 1)
 end)
 
 --Removes Jerry Can after fueling the plane
@@ -107,5 +108,5 @@ RegisterServerEvent("coke:RemoveJerry")
 AddEventHandler("coke:RemoveJerry", function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-      Player.Functions.RemoveItem('jerrycan', 1)
+      Player.Functions.RemoveItem('weapon_petrolcan', 1)
 end)

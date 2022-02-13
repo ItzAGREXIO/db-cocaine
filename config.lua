@@ -9,39 +9,21 @@ Config.randBrick = math.random(16,30) -- change the numbers to how much coke you
 Config.takeBrick = 1 -- amount of brick you want to take after processing
 Config.getCoords = true -- gets coords with /mycoords
 Config.pilotPed = "s_m_m_pilot_02" -- change this to have a different ped as the planes pilot - (lsit of peds: https://wiki.rage.mp/index.php?title=Peds)
-Config.landPlane = true -- change this if you want the plane to fly and land or if it should spawn on the ground
+Config.landPlane = false -- change this if you want the plane to fly and land or if it should spawn on the ground
+
+
 
 Config.locations = {
 	[1] = { 
-		fuel = {vector3(2140.458, 4789.831, 40.97033)},
-		landingLoc = {vector3(2102.974, 4794.949, 41.06044)},
-		plane = {vector4(1506.836, 4524.545, 97.78197, 296.68)},
-		runwayStart = {vector3(2082.278, 4785.483, 41.06053)},
-		runwayEnd = {vector3(1855.845, 4673.433, 52.04392)},
-		fuselage = {vector3(2137.618, 4812.194, 41.19522)},
-		stationary = {vector3(2133.73, 4782.65, 41.78, 205.16)},  ----start
-		delivery = {vector3(-2632.7, 5010.9, 0.8857441)},
-		hangar = {vector3(2133.73, 4782.65, 41.78)},  --- last
-		parking = {vector3(2133.73, 4782.194, 41.20)},															
+		fuel = {x = 2140.458, y = 4789.831, z = 40.97033},
+		landingLoc = {x = 2102.974, y = 4794.949, z = 41.06044},
+		plane = {x = 1506.836, y = 4524.545, z = 97.78197, h = 296.68},
+		runwayStart = {x = 2082.278, y = 4785.483, z = 41.06053},
+		runwayEnd = {x = 1855.845, y = 4673.433, z = 52.04392},
+		fuselage = {x = 2137.618, y = 4812.194, z = 41.19522},
+		stationary = {x = 2133.73, y = 4782.65, z = 41.78, h = 205.16},  ----start
+		delivery = {x = -2632.7, y = 5010.9, z = 0.8857441},
+		hangar = {x = 2133.73, y = 4782.65, z = 41.78},  --- last
+		parking = {x = 2133.73, y = 4782.194, z = 41.20},															
 	},
 }
-
--- Config.locations = {
--- 	[1] = { 
--- 		fuel = {x = 2140.458, y = 4789.831, z = 40.97033},
--- 		landingLoc = {x = 2102.974, y = 4794.949, z = 41.06044},
--- 		plane = {x = 1506.836, y = 4524.545, z = 97.78197, h = 296.68},
--- 		runwayStart = {x = 2082.278, y = 4785.483, z = 41.06053},
--- 		runwayEnd = {x = 1855.845, y = 4673.433, z = 52.04392},
--- 		fuselage = {x = 2137.618, y = 4812.194, z = 41.19522},
--- 		stationary = {x = 2133.73, y = 4782.65, z = 41.78, h = 205.16},  ----start
--- 		delivery = {x = -2632.7, y = 5010.9, z = 0.8857441},
--- 		hangar = {x = 2133.73, y = 4782.65, z = 41.78},  --- last
--- 		parking = {x = 2133.73, y = 4782.194, z = 41.20},															
--- 	},
--- }
-
-
-
-
-
